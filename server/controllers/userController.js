@@ -20,5 +20,13 @@ module.exports = {
         } catch (error) {
             return res.status(500).send(error)
         }
+    },
+    GetUsers: async (req, res) => {
+        try {
+            const getUsers = await Users.findAll()
+            return res.status(200).send(getUsers)
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 }
