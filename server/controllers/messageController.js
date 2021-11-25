@@ -3,7 +3,6 @@ const { Conversations, Users, Messages } = require("../models/index")
 module.exports = {
     AddMessage: async (req, res) => {
         try {
-            console.log(req.body);
 
             // Add to database
             await Messages.create({
@@ -13,7 +12,7 @@ module.exports = {
             // Send back all conversation
             const getMessages = await Messages.findAll({
                 where: {
-                    idConversation: req.body.idConversation
+                    ConversationId: req.body.ConversationId
                 }
             })
 

@@ -1,4 +1,4 @@
-const { Conversations, Users } = require("../models/index")
+const { Conversations, Users, Messages } = require("../models/index")
 const { Op } = require("sequelize");
 
 module.exports = {
@@ -43,7 +43,6 @@ module.exports = {
     GetConversation: async (req, res) => {
         try {
             const idUser = parseInt(req.params.id)
-            console.log(idUser);
 
             const conversationExist = await Conversations.findAll({
                 where: {
@@ -58,11 +57,30 @@ module.exports = {
             return res.status(200).send(conversationExist)
 
         } catch (error) {
-            return res.status(200).send(error)
+            return res.status(500).send(error)
         }
 
     },
     GetConversationById: async (req, res) => {
+        try {
+            const idConversation = parseInt(req.params.id)
+            console.log(idConversation);
+
+            const getConversation = await Conversations.findAll({
+                include: [{
+                    model: Messages,
+                    where: {
+                        ConversationId: idConversation
+                    }
+                }]
+            })
+
+
+            return res.status(200).send(getConversation)
+
+        } catch (error) {
+            return res.status(500).send(error)
+        }
 
     }
 }
