@@ -3,13 +3,10 @@ const { Op } = require("sequelize");
 
 module.exports = {
     NewConversation: async (req, res) => {
-        console.log(req.body);
         try {
             if (req.body.idReciever < req.body.idSender) {
                 req.body = { ...req.body, idSender: req.body.idReciever, idReciever: req.body.idSender }
             }
-
-            console.log(req.body);
 
             // check if user exist
             const userCheck = await Users.findAll({
@@ -29,7 +26,6 @@ module.exports = {
                 }
             })
 
-            console.log(conversationExist.length);
 
             if (conversationExist.length !== 0) {
                 return res.status(200).send({ message: "Conversation already exist", success: false })
@@ -39,7 +35,7 @@ module.exports = {
                 ...req.body
             })
 
-            return res.status(200).send(addConversation)
+            return res.status(200).json(addConversation)
         } catch (error) {
             return res.status(500).send(error)
         }
@@ -64,6 +60,9 @@ module.exports = {
         } catch (error) {
             return res.status(200).send(error)
         }
+
+    },
+    GetConversationById: async (req, res) => {
 
     }
 }
